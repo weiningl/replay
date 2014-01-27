@@ -34,7 +34,7 @@ data TestCase = TestCase
 runProgram :: Program -> Input -> IO Result
 runProgram p inp = do
     counter <- newIORef 0
-    let tick = modifyIORef counter (+1)
+    let tick = (putStrLn "inc tick") >> modifyIORef counter (+1)
     x <- play (p tick) emptyTrace inp
     n <- readIORef counter
     return (x, n)
@@ -77,4 +77,3 @@ testCases =
 
 -- | Running all the test cases.
 runTests = mapM checkTestCase testCases
-

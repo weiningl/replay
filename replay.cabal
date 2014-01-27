@@ -16,8 +16,10 @@ cabal-version:       >=1.8
 
 library
   exposed-modules:     Replay
-  -- other-modules:       
-  build-depends:       base >= 4 && < 5
+  other-modules:       EitherT
+  build-depends:       base >= 4 && < 5,
+                       mtl,
+                       transformers
 
 executable replayQA
   hs-source-dirs:      executable
