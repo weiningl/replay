@@ -67,9 +67,3 @@ run m tr = do
   case x of
     (Left q) -> return $ Left (q, w)
     (Right a) -> return $ Right a
-
--- run m tr = do
---   (x, w) <- runEitherT $ runWriterT $ evalStateT m tr
---   case x of
---     (Left q) -> return $ Left (q, w)
---     (Right a) -> return $ (Right a)
