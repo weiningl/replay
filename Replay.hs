@@ -5,6 +5,7 @@ module Replay (
   , io
   , ask
   , run
+  , cut
 
   -- * Trace
   , Trace
@@ -22,7 +23,9 @@ import EitherT
 type Trace r = [Item r]
 
 -- | Trace Element
-data Item r = Answer r | Result String deriving (Show, Read)
+data Item r = Answer r
+              | Final String
+              | Result String deriving (Show, Read)
 
 -- | Create empty trace
 emptyTrace :: Trace r
@@ -67,3 +70,10 @@ run m tr = do
   case x of
     (Left q) -> return $ Left (q, w)
     (Right a) -> return $ Right a
+
+-- | Shortcut computation if result is known
+cut :: (Monad m, Read a, Show a) => ReplayT m q r a -> ReplayT m q r a
+cut (StateT f) = StateT $ \tr ->
+  case tr of
+    ((Final s):_) -> return (read s, emptyTrace)
+    _ -> f tr
